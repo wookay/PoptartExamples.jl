@@ -1,0 +1,15 @@
+name = "PoptartExamples"
+uuid = "884bea6e-ac79-11e9-3b85-5d860c39df23"
+authors = ["WooKyoung Noh <wookay.noh@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Poptart ="197b51f5-fdb5-5f35-aa9f-0a14f35f5b28"
+Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
+Jive = "ba5e3d4b-8524-549f-bc71-e76ad9e9deed"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
