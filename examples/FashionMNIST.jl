@@ -1,5 +1,3 @@
-using Revise, Jive
-
 const fashion_labels = [
     "T-shirt/top", # 👕
     "Trouser",     # 👖
@@ -25,11 +23,27 @@ window1 = Window(title="Fashion MNIST", frame=(width=500,height=200))
 closenotify = Condition()
 app = Application(windows=[window1], title="App", frame=(width=630, height=400), closenotify=closenotify)
 
+spy1 = Spy(A=fill(0, (28, 28)), label="", frame=(width=100, height=100))
+put!(window1, spy1)
+
+barplot1 = BarPlot(captions=fashion_labels, values=fill(0, 10))
+put!(window1, barplot1)
+
+btn_getdata = Button(title="getdata", frame=(width=80, height=30))
+put!(window1, btn_getdata)
+
+btn_evaluate = Button(title="evaluate", frame=(width=80, height=30))
+put!(window1, btn_evaluate)
+
+println("loading train data")
+
 using Flux
 using .Flux.Data: FashionMNIST
 
 trainimages = FashionMNIST.images()
 trainlabels = FashionMNIST.labels()
+
+# code from https://github.com/JuliaComputing/ODSC2019/blob/master/01-Flux-digits.ipynb
 
 preprocess(img) = vec(Float64.(img))
 function create_batch(r)
@@ -49,24 +63,14 @@ model = Chain(Dense(n_inputs, n_outputs, identity), softmax)
 L(x,y) = Flux.crossentropy(model(x), y)
 opt = Descent()
 
-spy1 = Spy(A=fill(0, (28, 28)), label="", frame=(width=100, height=100))
-put!(window1, spy1)
-
-barplot1 = BarPlot(captions=fashion_labels, values=fill(0, 10))
-put!(window1, barplot1)
-
-btn_getdata = Button(title="getdata", frame=(width=80, height=30))
-put!(window1, btn_getdata)
-
-btn_evaluate = Button(title="evaluate", frame=(width=80, height=30))
-put!(window1, btn_evaluate)
-
 mutable struct Item
     nth
     img
 end
 
 item = Item(nothing, nothing)
+
+println("loading test data")
 
 testimages = FashionMNIST.images(:test)
 testlabels = FashionMNIST.labels(:test)
@@ -116,13 +120,5 @@ function show_loss()
     item.img !== nothing && evaluate()
 end
 Flux.train!(L, params(model), Iterators.repeated(trainbatch, 300), opt; cb = Flux.throttle(show_loss, 1))
-
-trigger = function (path)
-    printstyled("changed ", color=:cyan)
-    println(path)
-    revise()
-end
-watch(trigger, @__DIR__, sources=[pathof(Poptart)])
-trigger("")
 
 Base.JLOptions().isinteractive==0 && wait(closenotify)
