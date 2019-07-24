@@ -1,3 +1,6 @@
+# [deps]
+# Flux, Poptart
+
 const fashion_labels = [
     "T-shirt/top", # 👕
     "Trouser",     # 👖

@@ -1,3 +1,6 @@
+# [deps]
+# Colors, Poptart
+
 using Poptart.Desktop # Application Window put!
 using Poptart.Controls # LinePlot
 using Poptart.Animations

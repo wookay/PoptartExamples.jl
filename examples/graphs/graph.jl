@@ -1,4 +1,9 @@
-using Tutte.Graphs # WTGraph ⇿ IDMap Node @nodes
+# [deps]
+# LightGraphs, Colors, Compose, Poptart
+# https://github.com/wookay/Tutte.jl
+# https://github.com/wookay/Allographs.jl
+
+using Tutte.Graphs # WTGraph ⇿ @nodes
 using .Graphs: simplegraph_nodes
 using LightGraphs.SimpleGraphs: SimpleGraph
 
