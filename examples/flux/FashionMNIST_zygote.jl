@@ -1,5 +1,7 @@
 # [deps]
-# Flux, Poptart
+# Flux#zygote, Poptart, Revise, Jive
+
+using Revise, Jive
 
 const fashion_labels = [
     "T-shirt/top", # 👕
@@ -97,7 +99,7 @@ function evaluate()
     label = testlabels[nth]
     spy1.label = fashion_label(label)
 
-    data = model(vec(img)).data
+    data = model(vec(img))
     barplot1.values = data
     (maxval, index) = findmax(data)
     if (index - 1) == label
@@ -115,13 +117,25 @@ didClick(btn_evaluate) do event
     evaluate()
 end
 
+getdata()
+
 using Printf
 function show_loss()
-    train_loss = L(trainbatch...).data
-    test_loss  = L(testbatch...).data
+    train_loss = L(trainbatch...)
+    test_loss  = L(testbatch...)
     @printf("train loss = %.3f, test loss = %.3f\n", train_loss, test_loss)
     item.img !== nothing && evaluate()
 end
-Flux.train!(L, params(model), Iterators.repeated(trainbatch, 300), opt; cb = Flux.throttle(show_loss, 1))
+Flux.train!(L, params(model), Iterators.repeated(trainbatch, 200), opt; cb = Flux.throttle(show_loss, 1))
+
+
+trigger = function (path)
+    printstyled("changed ", color=:cyan)
+    println(path)
+    revise()
+end
+
+watch(trigger, @__DIR__, sources=[pathof(Poptart)])
+trigger("")
 
 Base.JLOptions().isinteractive==0 && wait(closenotify)
