@@ -24,9 +24,10 @@ using Poptart
 using .Poptart.Desktop # Application Window put!
 using .Poptart.Controls # Spy BarPlot
 
-window1 = Window(title="Fashion MNIST", frame=(width=500,height=200))
+frame = (width=500, height=400)
+window1 = Window(title="Fashion MNIST", frame=frame)
 closenotify = Condition()
-app = Application(windows=[window1], title="App", frame=(width=630, height=400), closenotify=closenotify)
+app = Application(windows=[window1], title="App", frame=frame, closenotify=closenotify)
 
 spy1 = Spy(A=fill(0, (28, 28)), label="", frame=(width=100, height=100))
 put!(window1, spy1)
