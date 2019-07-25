@@ -1,8 +1,6 @@
 # [deps]
 # Flux#zygote, Poptart, Revise, Jive
 
-using Revise, Jive
-
 const fashion_labels = [
     "T-shirt/top", # 👕
     "Trouser",     # 👖
@@ -128,15 +126,5 @@ function show_loss()
     item.img !== nothing && evaluate()
 end
 Flux.train!(L, params(model), Iterators.repeated(trainbatch, 200), opt; cb = Flux.throttle(show_loss, 1))
-
-
-trigger = function (path)
-    printstyled("changed ", color=:cyan)
-    println(path)
-    revise()
-end
-
-watch(trigger, @__DIR__, sources=[pathof(Poptart)])
-trigger("")
 
 Base.JLOptions().isinteractive==0 && wait(closenotify)
