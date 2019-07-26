@@ -7,7 +7,7 @@ module App
 
 using Poptart
 using .Poptart.Desktop # Application Window put!
-using .Poptart.Controls # Spy BarPlot
+using .Poptart.Controls # Spy BarPlot Slider Group SameLine
 using CImGui
 using Flux
 using .Flux.Data: FashionMNIST
@@ -64,19 +64,14 @@ function main()
     app = Application(windows=[window1], title="App", frame=frame, closenotify=closenotify)
 
     spy1 = Spy(A=fill(0, (28, 28)), label="", frame=(width=100, height=100))
-    put!(window1, spy1)
-
     barplot1 = BarPlot(captions=fashion_label_names, values=fill(0, 10))
-    put!(window1, barplot1)
-
     btn_getdata = Button(title="getdata", frame=(width=80, height=30))
-    put!(window1, btn_getdata)
-
     btn_evaluate = Button(title="evaluate", frame=(width=80, height=30))
-    put!(window1, btn_evaluate)
+    put!(window1, spy1, barplot1, btn_getdata, btn_evaluate)
 
     btn_train = Button(title="train", frame=(width=80, height=30))
-    put!(window1, btn_train)
+    slider_repeated = Slider(label="repeated", range=1:10000, value=100)
+    put!(window1, Group(items=[btn_train, SameLine(), slider_repeated]))
 
     n_inputs = 28^2 # 84
     n_outputs = 10 # length(unique(trainlabels))
@@ -93,10 +88,6 @@ function main()
     testimages = fashion_images(:test)
     testlabels = fashion_labels(:test)
 
-    batchsize = 50 # 5000
-    trainbatch = create_batch(trainimages, trainlabels, batchsize)
-    testbatch = create_batch(trainimages, trainlabels, batchsize)
-
     function getdata() # testimages, testlabels, item, spy1, barplot1
         img = first(Iterators.take(testimages, 1))
         label = first(Iterators.take(testlabels, 1))
@@ -108,15 +99,18 @@ function main()
         barplot1.label = ""
     end
 
-    function show_loss() # L, trainbatch, testbatch, item
-        train_loss = L(trainbatch...)
-        test_loss  = L(testbatch...)
-        @printf("train loss = %.3f, test loss = %.3f\n", train_loss, test_loss)
-        item.img !== nothing && evaluate()
-    end
-
     function train()
-        Flux.train!(L, params(model), Iterators.repeated(trainbatch, 200), opt; cb = Flux.throttle(show_loss, 1))
+        batchsize = 50 # 5000
+        trainbatch = create_batch(trainimages, trainlabels, batchsize)
+        testbatch = create_batch(trainimages, trainlabels, batchsize)
+
+        function show_loss() # L, trainbatch, testbatch, item
+            train_loss = L(trainbatch...)
+            test_loss  = L(testbatch...)
+            @printf("train loss = %.3f, test loss = %.3f\n", train_loss, test_loss)
+            item.img !== nothing && evaluate()
+        end
+        Flux.train!(L, params(model), Iterators.repeated(trainbatch, slider_repeated.value), opt; cb = Flux.throttle(show_loss, 1))
     end
 
     function evaluate() # item, spy1, barplot1
