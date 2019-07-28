@@ -5,21 +5,21 @@ using Revise, Jive # revise watch
 
 using Poptart
 using .Poptart.Desktop # Application Window put!
-using .Poptart.Controls # MenuBar Menu MenuItem
+using .Poptart.Controls # Knob
 using CImGui
 
 frame = (width=500, height=600)
-window1 = Window(title="MenuBar", frame=frame, flags=CImGui.ImGuiWindowFlags_MenuBar)
+window1 = Window(title="Group", frame=frame, flags=CImGui.ImGuiWindowFlags_NoMove)
 closenotify = Condition()
 app = Application(windows=[window1], title="App", frame=frame, closenotify=closenotify)
 
-menu = Menu(title="Examples", items=[
-    MenuItem(title="Main menu bar"),
-    MenuItem(title="Close"),
-])
-put!(window1, MenuBar(menus=[menu]))
+knob1 = Knob(label="knob", value=5, range=0:10)
+put!(window1, knob1)
 
-put!(window1, Button(title="Button"))
+didClick(knob1) do event
+    @info :didClick (event, knob1.value)
+end
+
 
 trigger = function (path)
     printstyled("changed ", color=:cyan)
