@@ -1,7 +1,8 @@
 # [deps]
-# QRCode, Poptart
+# QRCode
+#     https://github.com/jiegillet/QRCode.jl
 
-using QRCode
+using QRCode # qrcode
 using Poptart
 using .Poptart.Desktop # Application Window put!
 using .Poptart.Controls # Spy

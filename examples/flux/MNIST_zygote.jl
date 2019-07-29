@@ -1,5 +1,7 @@
 # [deps]
-# Flux#zygote, Poptart, CImGui, Revise, Jive
+# Flux#zygote
+#     https://github.com/FluxML/Flux.jl/tree/zygote
+# Poptart, CImGui, Revise, Jive
 
 # code from https://github.com/JuliaComputing/ODSC2019/blob/master/01-Flux-digits.ipynb
 
