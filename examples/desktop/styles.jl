@@ -11,7 +11,11 @@ using CImGui
 frame = (width=500, height=600)
 window1 = Window(title="Styles", frame=frame)
 closenotify = Condition()
-app = Application(windows=[window1], title="App", frame=frame, closenotify=closenotify)
+app = Application(windows=[window1], title="App", frame=frame, closenotify=closenotify,
+    pre_block = function ()
+        FontAtlas.add_font_bundle()
+    end
+)
 
 btn1 = Button(title="Light")
 btn2 = Button(title="Dark")
@@ -29,8 +33,6 @@ end
 didClick(btn3) do event
     CImGui.StyleColorsClassic()
 end
-
-FontAtlas.add_font_bundle()
 
 Mouse.leftClick(btn2)
 
