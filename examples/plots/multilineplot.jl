@@ -15,8 +15,8 @@ app = Application(windows=[window1], title="App", frame=frame, closenotify=close
 
 lineplots = LinePlot[]
 for (values, label, color) in [
-        (rand(10), "lineplot1", RGBA(0.8,0.8,0.8,1)),
-        (rand(10), "lineplot1", RGBA(0.8,0.8,0.8,1)),
+        (rand(10), "lineplot1", RGBA(0.8,0.1,0.8,1)),
+        (rand(10), "lineplot2", RGBA(0.2,0.2,0.8,1)),
     ]
     push!(lineplots, LinePlot(values=values, label=label, color=color))
 end

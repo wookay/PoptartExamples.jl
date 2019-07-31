@@ -12,4 +12,4 @@
 
  * [apps/qrcode.jl](https://github.com/wookay/PoptartExamples.jl/blob/master/examples/apps/qrcode.jl)
 
-    <img src="https://wookay.github.io/docs/PoptartExamples.jl/assets/apps/qrcode.png" alt="qrcode.png" width="100" />
+    <img src="https://wookay.github.io/docs/PoptartExamples.jl/assets/apps/qrcode.png" alt="qrcode.png" width="180" />
