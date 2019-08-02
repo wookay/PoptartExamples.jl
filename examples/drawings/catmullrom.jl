@@ -9,7 +9,7 @@ using Colors: RGBA
 using CatmullRom # catmullrom
 
 canvas = Canvas()
-window1 = Windows.Window(items=[canvas], title="Drawings", frame=(x=0, y=0, width=550, height=400))
+window1 = Windows.Window(items=[canvas], title="CatmullRom", frame=(x=0, y=0, width=550, height=400))
 closenotify = Condition()
 Application(windows=[window1], title="App", frame=(width=550, height=400), closenotify=closenotify)
 
