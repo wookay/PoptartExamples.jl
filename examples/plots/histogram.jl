@@ -5,10 +5,10 @@ using Revise, Jive # revise watch
 
 using Poptart
 using .Poptart.Desktop # Application Window put!
-using .Poptart.Controls # LinePlot
+using .Poptart.Controls # Histogram
 using Colors: RGBA
 
-window1 = Window(title="LinePlot")
+window1 = Window(title="Histogram")
 closenotify = Condition()
 app = Application(windows=[window1], title="App", closenotify=closenotify)
 
@@ -16,12 +16,12 @@ using Random
 Random.seed!()
 
 values = rand(10)
-lineplot1 = LinePlot(label="lineplot1", values=values, scale=(min=0, max=1), frame=(width=150, height=80))
-put!(window1, lineplot1)
+plot1 = Histogram(values=values, label="histogram1", scale=(min=0, max=1.0), frame=(width=150, height=100))
+put!(window1, plot1)
 
 values = rand(0:100, 10)
-lineplot2 = LinePlot(label="lineplot2", values=values, scale=(min=0, max=100), color=RGBA(0.5, 0.5, 0.8, 1), frame=(width=150, height=80))
-put!(window1, lineplot2)
+plot2 = Histogram(values=values, label="histogram2", scale=(min=0, max=100), frame=(width=150, height=100))
+put!(window1, plot2)
 
 
 trigger = function (path)
