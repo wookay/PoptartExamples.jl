@@ -140,10 +140,11 @@ function main()
     end
 
     getdata()
+    closenotify
 end # main()
 
 Base.@ccallable function julia_main(ARGS::Vector{String})::Cint
-    main()
+    closenotify = main()
     Base.JLOptions().isinteractive==0 && wait(closenotify)
     return 0
 end
