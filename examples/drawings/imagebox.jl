@@ -1,19 +1,19 @@
 # [deps]
-# TestImages, Poptart
+# Poptart v0.3.1
+# TestImages
 
-using Poptart.Desktop # Application Windows put!
-using Poptart.Controls # Canvas
+using Poptart.Desktop
 using Poptart.Drawings # ImageBox
 using TestImages: testimage
 
-frame = frame=(width=500, height=550)
+frame = (width=500, height=550)
 canvas = Canvas()
-window1 = Windows.Window(items=[canvas], title="ImageBox", frame=frame)
-closenotify = Condition()
-Application(windows=[window1], title="App", frame=frame, closenotify=closenotify)
+window1 = Window(items=[canvas], title="ImageBox", frame=frame)
+app = Application(windows=[window1], title="App", frame=frame)
 
 img = testimage("cameraman.tif")
 box1 = ImageBox(image=img)
-put!(canvas, box1)
+push!(canvas.items, box1)
 
-Base.JLOptions().isinteractive==0 && wait(closenotify)
+Desktop.exit_on_esc() = true
+Base.JLOptions().isinteractive==0 && wait(app.closenotify)

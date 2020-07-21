@@ -1,17 +1,17 @@
 # [deps]
-# Poptart, Revise, Jive
+# Poptart v0.3.1
+# Revise
+# Jive
 
 using Revise, Jive # revise watch
 
 using Poptart
-using .Poptart.Desktop # Application Window put!
-using .Poptart.Controls # LinePlot MultiLinePlot
+using .Poptart.Desktop
 using Colors # RGBA
 
 frame = (width=500, height=600)
 window1 = Window(title="MultiLinePlot", frame=frame)
-closenotify = Condition()
-app = Application(windows=[window1], title="App", frame=frame, closenotify=closenotify)
+app = Application(windows=[window1], title="App", frame=frame)
 
 lineplots = LinePlot[]
 for (values, label, color) in [
@@ -21,7 +21,7 @@ for (values, label, color) in [
     push!(lineplots, LinePlot(values=values, label=label, color=color))
 end
 multi1 = MultiLinePlot(items=lineplots, label="multi1")
-put!(window1, multi1)
+push!(window1.items, multi1)
 
 lineplots = LinePlot[]
 for (values, label, color) in [
@@ -32,7 +32,7 @@ for (values, label, color) in [
     push!(lineplots, LinePlot(values=values, label=label, color=color))
 end
 multi2 = MultiLinePlot(items=lineplots, label="multi2", scale=(min=0, max=100))
-put!(window1, multi2)
+push!(window1.items, multi2)
 
 
 trigger = function (path)
@@ -44,4 +44,5 @@ end
 watch(trigger, @__DIR__, sources=[pathof(Poptart)])
 trigger("")
 
-Base.JLOptions().isinteractive==0 && wait(closenotify)
+Desktop.exit_on_esc() = true
+Base.JLOptions().isinteractive==0 && wait(app.closenotify)

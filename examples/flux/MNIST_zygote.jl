@@ -8,8 +8,7 @@
 module App
 
 using Poptart
-using .Poptart.Desktop # Application Window put!
-using .Poptart.Controls # Spy BarPlot Slider Group SameLine
+using .Poptart.Desktop
 using CImGui
 using Flux
 using .Flux.Data: MNIST
@@ -48,8 +47,7 @@ end
 function main()
     frame = (width=500, height=400)
     window1 = Window(title="MNIST", frame=frame, flags=CImGui.ImGuiWindowFlags_NoMove)
-    closenotify = Condition()
-    app = Application(windows=[window1], title="App", frame=frame, closenotify=closenotify)
+    app = Application(windows=[window1], title="App", frame=frame)
 
     spy1 = Spy(A=fill(0, (28, 28)), label="", frame=(width=100, height=100))
     barplot1 = BarPlot(captions=mnist_label_names, values=fill(0, 10))
@@ -126,12 +124,14 @@ function main()
     end
 
     getdata()
-    closenotify
+    app
 end # main()
 
+Desktop.exit_on_esc() = true
+
 Base.@ccallable function julia_main(ARGS::Vector{String})::Cint
-    closenotify = main()
-    Base.JLOptions().isinteractive==0 && wait(closenotify)
+    app = main()
+    Base.JLOptions().isinteractive==0 && wait(app.closenotify)
     return 0
 end
 

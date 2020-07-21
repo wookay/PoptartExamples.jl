@@ -8,8 +8,7 @@
 module App
 
 using Poptart
-using .Poptart.Desktop # Application Window put!
-using .Poptart.Controls # Spy BarPlot Slider Group SameLine
+using .Poptart.Desktop
 using CImGui
 using Flux
 using .Flux.Data: FashionMNIST
@@ -62,18 +61,17 @@ end
 function main()
     frame = (width=500, height=400)
     window1 = Window(title="Fashion MNIST", frame=frame, flags=CImGui.ImGuiWindowFlags_NoMove)
-    closenotify = Condition()
-    app = Application(windows=[window1], title="App", frame=frame, closenotify=closenotify)
+    app = Application(windows=[window1], title="App", frame=frame)
 
     spy1 = Spy(A=fill(0, (28, 28)), label="", frame=(width=100, height=100))
     barplot1 = BarPlot(captions=fashion_label_names, values=fill(0, 10))
     btn_getdata = Button(title="getdata", frame=(width=80, height=30))
     btn_evaluate = Button(title="evaluate", frame=(width=80, height=30))
-    put!(window1, spy1, barplot1, btn_getdata, btn_evaluate)
+    push!(window1.items, spy1, barplot1, btn_getdata, btn_evaluate)
 
     btn_train = Button(title="train", frame=(width=80, height=30))
     slider_repeated = Slider(label="repeated", range=1:10000, value=100)
-    put!(window1, Group(items=[btn_train, SameLine(), slider_repeated]))
+    push!(window1.items, Group(items=[btn_train, SameLine(), slider_repeated]))
 
     n_inputs = 28^2 # 84
     n_outputs = 10 # length(unique(trainlabels))
@@ -140,12 +138,14 @@ function main()
     end
 
     getdata()
-    closenotify
+    app
 end # main()
 
+Desktop.exit_on_esc() = true
+
 Base.@ccallable function julia_main(ARGS::Vector{String})::Cint
-    closenotify = main()
-    Base.JLOptions().isinteractive==0 && wait(closenotify)
+    app = main()
+    Base.JLOptions().isinteractive==0 && wait(app.closenotify)
     return 0
 end
 

@@ -1,28 +1,25 @@
-# Poptart v0.2.2
-
 # [deps]
-# Poptart, Revise, Jive
+# Poptart v0.3.1
+# Revise
+# Jive
 
 using Revise, Jive # revise watch
 
 using Poptart
-using .Poptart.Desktop # Application Window put!
-using .Poptart.Controls # MenuBar Menu MenuItem Separator
+using .Poptart.Desktop
 using CImGui
 
 frame = (width=500, height=600)
 window1 = Window(title="MenuBar", frame=frame, flags=CImGui.ImGuiWindowFlags_MenuBar)
-closenotify = Condition()
-app = Application(windows=[window1], title="App", frame=frame, closenotify=closenotify)
+app = Application(windows=[window1], title="App", frame=frame)
 
 menu = Menu(title="Examples", items=[
     MenuItem(title="Main menu bar"),
     Separator(),
     MenuItem(title="Close"),
 ])
-put!(window1, MenuBar(menus=[menu]))
-
-put!(window1, Button(title="Button"))
+push!(window1.items, MenuBar(menus=[menu]))
+push!(window1.items, Button(title="Button"))
 
 trigger = function (path)
     printstyled("changed ", color=:cyan)
@@ -33,4 +30,5 @@ end
 watch(trigger, @__DIR__, sources=[pathof(Poptart)])
 trigger("")
 
-Base.JLOptions().isinteractive==0 && wait(closenotify)
+Desktop.exit_on_esc() = true
+Base.JLOptions().isinteractive==0 && wait(app.closenotify)
