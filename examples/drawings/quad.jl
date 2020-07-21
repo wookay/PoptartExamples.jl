@@ -1,5 +1,5 @@
 # [deps]
-# Poptart v0.3.1
+# Poptart v0.3
 
 using Poptart.Desktop
 using Poptart.Drawings # Line Rect Circle Triangle Arc Pie Curve Polyline Polygon stroke fill

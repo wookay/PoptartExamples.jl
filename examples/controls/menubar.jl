@@ -1,5 +1,5 @@
 # [deps]
-# Poptart v0.3.1
+# Poptart v0.3
 # Revise
 # Jive
 
