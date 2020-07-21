@@ -53,11 +53,11 @@ function main()
     barplot1 = BarPlot(captions=mnist_label_names, values=fill(0, 10))
     btn_getdata = Button(title="getdata", frame=(width=80, height=30))
     btn_evaluate = Button(title="evaluate", frame=(width=80, height=30))
-    put!(window1, spy1, barplot1, btn_getdata, btn_evaluate)
+    push!(window1.items, spy1, barplot1, btn_getdata, btn_evaluate)
 
     btn_train = Button(title="train", frame=(width=80, height=30))
     slider_repeated = Slider(label="repeated", range=1:10000, value=100)
-    put!(window1, Group(items=[btn_train, SameLine(), slider_repeated]))
+    push!(window1.items, Group(items=[btn_train, SameLine(), slider_repeated]))
 
     n_inputs = 28^2 # 84
     n_outputs = 10 # length(unique(trainlabels))
